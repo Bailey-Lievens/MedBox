@@ -1,11 +1,11 @@
 <?php
  if (!empty($_POST)) {
-    $fp = fopen("json_schedule.json", "w");
-    fprintf($fp, json_encode($_POST));
-    fclose($fp);
-
     $fp = fopen("txt_schedule.txt", "w");
-    fprintf($fp, json_encode($_POST));
+
+    foreach ($_POST as $moment => $medicine) {
+        fprintf($fp,  $moment . ":" . $medicine. "\n");
+    }
+
     fclose($fp);
  }
 ?>

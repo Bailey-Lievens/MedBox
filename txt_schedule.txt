@@ -1,1 +1,21 @@
-{"monday_morning":"","monday_midday":"sdf","monday_evening":"","tuesday_morning":"","tuesday_midday":"","tuesday_evening":"","wednesday_morning":"","wednesday_midday":"","wednesday_evening":"","thursday_morning":"","thursday_midday":"","thursday_evening":"","friday_morning":"","friday_midday":"","friday_evening":"","saturday_morning":"","saturday_midday":"","saturday_evening":"","sunday_morning":"","sunday_midday":"","sunday_evening":""}
+monday_morning:Dafalgan
+monday_midday:Bram
+monday_evening:Aspirine
+tuesday_morning:Dafalgan
+tuesday_midday:Bloedverdunner
+tuesday_evening:
+wednesday_morning:Aderall
+wednesday_midday:Weed
+wednesday_evening:Desinf
+thursday_morning:Vaporub
+thursday_midday:Dafalgan
+thursday_evening:Vitamin-D
+friday_morning:Magic
+friday_midday:Not magic :(
+friday_evening:Elven magic
+saturday_morning:Snoepje
+saturday_midday:
+saturday_evening:Bloedverdunner
+sunday_morning:Dafalgan
+sunday_midday:Dafalgan
+sunday_evening:Dafalgan
