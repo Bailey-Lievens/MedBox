@@ -1,4 +1,6 @@
 #include <ESP8266WiFi.h>
+#include <Servo.h>
+#include <LiquidCrystal.h>
 
 //Call to ESpressif SDK
 extern "C" {
@@ -6,8 +8,8 @@ extern "C" {
 }
 
 //Set ssid and password
-const char* ssid     = "BaileyTest";
-const char* password = "Welkom01";
+const char* ssid     = "Rony De Router";
+const char* password = "kpBYur5fXXBs";
 
 int timeDelays[4] = {1000, 2000, 3000}; //Real times should be 14400000, 21600000, 50400000 (in this order) equates to 4hours 6hours 14hours
 
@@ -19,6 +21,8 @@ const char* host = "medbox.baileylievens.be";
 
 //Used to read the info from online
 String line = "";
+int text1;
+String text2 = "";
 
 //Boolean to check if the relevant info has been reached yet
 boolean reachedInfo = false;
@@ -33,11 +37,19 @@ int timeCounter = 0;
 //Counter to hold the amount of lines read
 //Starts at -1 because the website output starts with something useless
 int lineCounter = -1;
-  
+Servo servo1;
+int currentAngle = 180; // begin van 180 graden
+
+//const int rs = 0, e = 16, d4 = 2, d5 = 12, d6 = 13, d7 = 15;
+LiquidCrystal lcd(12, 13, 15, 16, 0, 2);
+
 void setup() {
   Serial.begin(115200);
   Serial.println();
-  
+  servo1.attach(14); //aangesloten op pin 12
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+
   //Set mac adress of the esp
   wifi_set_macaddr(0, const_cast<uint8*>(mac)); 
   
@@ -64,6 +76,7 @@ void setup() {
 
 
 void loop() {
+  
   Serial.print("connecting to ");
   Serial.println(host);
 
@@ -91,6 +104,8 @@ void loop() {
   //Read everything and store the schedule
   while(client.available()){
     line = client.readStringUntil('\n');
+    text1 = line.indexOf(":");
+    text2 = line.substring(text1);
 
     //When the start of the schedule has been reached, start concatonating it and storing the data
     if(line == "Schedule=" || reachedInfo){
@@ -144,18 +159,34 @@ int getDelay(int currentTimeCounter){
 
 //Open the next pill container
 void openNextPillContainer(){
-  //@Ellen zet hier code om die servo te draaien zodat de volgende container steeds opengaat, wss gelek 15° elke keer ofzo
+  for(int i=currentAngle; i>currentAngle-8.5; i--){ 
+          servo1.write(i); // draai 8.5 graden verder
+          delay(70); // om rustiger te draaien
+        }
+  currentAngle = currentAngle -8.5;
   Serial.println("Next pill container opened");
 }
 
 //Close the pill box
 void closePillBox(){
-  //@Ellen zet hier code om die servo volledig terug te draaien, aka sluit de pillen doos
+  setLcdText("Closing box");
+  for(int i=currentAngle; i<180 ; i++){
+          servo1.write(i); // draai naar 180 graden
+          delay(70);
+        }
+  currentAngle = 0;
   Serial.println("Pill box closed");  
 }
 
 //Set the lcd screen text
 void setLcdText(String text){
-  //@Ellen zet hier code om de tekst op die lcd te veranderen naar de tekst die word meegegeven als parameter 
+  // Print the time to the LCD.
+  lcd.setCursor(0,0);
+  lcd.print(text);
+  // printing pill name
+  lcd.setCursor(0,1);
+  lcd.print(text2);
+  delay(7000);
+  lcd.clear();
   Serial.println("Text changed to: " + text);
 }
